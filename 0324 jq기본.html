@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- JS를 작성하면서 JQ를 쓰기 위해 먼저 불러옴-->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <script>
+        // 문서 준비 메소드 확인
+        // 문서의 태그가 출력되기 전에 호출하면 값을 가져올 수 없단
+        console.log($("#header"));
+
+        // 문서 준비 메소드 확인
+        // 문서가 먼저 준비된 이후에 코드 실행
+        $(function(){
+            console.log($("#header"));
+        });
+    </script>
+</head>
+<body>
+    <h1 id="header">JQuery</h1>
+    <button id="button">제이쿼리로 접근하여 버튼에 이벤트</button>
+    <button id="button2">안에 값을 클릭했을 때 안녕으로 바꾸세요</button>
+
+    <ul id="list">
+        <li>첫번째</li>
+        <li>두번째</li>
+        <li>세번째</li>
+        <li>네번째</li>
+    </ul>
+    
+    <form id="form">
+        <label for="">이름</label>
+        <input type="text" id="name">
+        <input type="submit" value="제출">
+    </form>
+
+    <ul id="list2">
+        <!-- 아래값을 'list시작'으로 바꾸세요 -->
+        <li>1</li>
+        <!-- 아래값을 'JQ를 통해 작성중입니다' -->
+        <li>2</li>
+        <!-- 아래값을 '세번째 li 태그입니다' -->
+        <li>3</li>
+        <!-- 아래값을 '네번째 li 태그입니다' -->
+        <li>4</li>
+        <li>5</li>
+    </ul>
+
+    <script>
+        // 바닐라 자바스크립트
+        const header = document.querySelector("#header");
+        // 제이쿼리
+        const headerJq = $("#header");
+
+        console.log(header);
+        console.log(headerJq);
+
+
+        // 제이쿼리로 접근하여 버튼에 이벤트
+        $("#button").on("click",function(){
+            // 모든 속성에 메소드로 접근해서 값 할당
+            headerJq.text("버튼을 눌렀습니다");
+            // 메소드로 클래스 바로 접근
+            headerJq.addClass();
+            headerJq.removeClass();
+        });
+
+        // id = button2에 접근해서 그 값 바꾸기
+        $("#button2").on("click",function(e){
+            $("#button2").text("안녕");
+            // 이벤트 객체는 JS로 접근
+            //  e.target.innerHTML = "안녕";
+        })
+
+        /* 제이쿼리 CSS 선택자 */
+        const ul = $("#list");
+        // 부모의 자식들 중에서 그 위치에 있는 값을 찾을 때 사용
+        console.log($("#list li:eq(0)")); // <li>첫번째<li>
+        // 부모의 자식들 중에서 그 위치보다 큰 위치에 있는 값
+        console.log($("#list li:gt(1)"));
+
+
+        /* 제이쿼리 메소드의 특징 */
+        /* 제이쿼리는 속성에 직접 접근하지 않고 메소드로 값을 가져오거나 값을 수정 */
+        
+        // 값 수정(setter)
+        $("#header").text("글자를 수정합니다");
+        // 값 가져옴(getter)
+        console.log($("header").text());
+
+        // form, input의 값을 가져오기 위한 메소드 val()
+        $("#name").val("값을 입력하였습니다");
+        console.log($("#name").val());
+
+        /* 제이쿼리 메소드체이닝chaining */
+        // 제이쿼리를 이요하여 객체의 값을 변경한 후
+        // 다른 메소드를 이용해서 계속 변경이 가능
+        $("#name").height(60).width(60);
+
+        /* 제이쿼리를 이용한 생성 추가 */
+        const p = $("<p>");
+        p.text("값을 입력하였습니다-생성된 태그");
+        $("body").append(p);
+        // 삭제
+        // p.remove();
+
+        /* 제이쿼리를 이용한 노드 탐색 */
+        // 부모, 형제, 자식 태그를 메소드로 찾을 수 있다
+        // 메소드 체이닝이 적용이 되어
+        // 메소드 뒤에 연결하여서 계속 찾을 수 있다
+        // 부모 : parents(), parent()
+        // 형제 : siblings(), next(), prev()
+        // 자식 : children(), find(): 선택자를 이용해서 찾음
+        
+        // JQ에서 추가된 필터링 메소드
+        // .first(), .last(), .eq(), .filter()를 통해서
+        // children()을 통해 자식들 중에서 원하는 값을 찾음
+        console.log($("#list").children().first()); // 첫번째li
+        console.log($("#list").children().eq(1)); // 인덱스1, 두번째li
+        console.log($("#list").children().filter(":eq(2)")); // 인덱스2, 세번째li
+
+
+        // JQ 실습
+        $("#list2").children().first().text("list시작");
+        $("#list2").children().eq(1).text("제이쿼리를 통해 작성중입니다");
+        $("#list2").children().eq(2).text("세번째li 태그입니다");
+        $("#list2").children().filter(":eq(3)").text("네번째li 태그입니다");
+        $("#list2").children().filter("li:nth-child(5)").text("마지막 태그입니다");
+        // filter에 작성된 css선택자는 현재 children 중에서 찾는다
+        // :nth-child(3) 이대로 사용하면
+        // 현재 자식 중에서 태그/클래스 상관없이 3번째 자식을 찾는다
+        </script>
+</body>
+</html>
